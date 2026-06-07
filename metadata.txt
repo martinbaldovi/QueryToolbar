@@ -16,14 +16,11 @@ deprecated=False
 # Tags (comma separated)
 tags=query,selection,manifold,toolbar,attributes
 
-# Homepage (optional)
+# Homepage
 homepage=https://github.com/martinbaldovi/QueryToolbar
 
-# Repository (optional)
+# Repository
 repository=https://github.com/martinbaldovi/QueryToolbar
 
-# Icon (optional)
-icon=icon.png
-
-# Changelog (optional)
+# Changelog
 changelog=Initial release for QGIS 4.0
