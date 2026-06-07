@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 QueryToolbar – Manifold‑style query toolbar for QGIS 4.0 (Qt6)
-Auto‑updates field list when fields are added or deleted.
 """
 
 import os
