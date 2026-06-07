@@ -1,6 +1,7 @@
 [general]
 name=QueryToolbar
 description=Replicates the Manifold System Release 8.0 query toolbar with full enhancements (numeric spin boxes, date picker, NULL handling, unique values)
+about=This plugin adds a query toolbar to QGIS, replicating Manifold System Release 8.0 functionality. It provides enhanced attribute filtering with numeric spin boxes, date pickers, NULL handling, and unique value dropdowns.
 version=1.0.0
 author=Martin Denver G. Baldovi
 email=martin@baldovi.me
