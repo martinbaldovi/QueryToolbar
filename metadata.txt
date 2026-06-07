@@ -24,3 +24,6 @@ repository=https://github.com/martinbaldovi/QueryToolbar
 
 # Changelog
 changelog=Initial release for QGIS 4.0
+
+# Tracker for bug reports and issues
+tracker=https://github.com/martinbaldovi/QueryToolbar/issues
