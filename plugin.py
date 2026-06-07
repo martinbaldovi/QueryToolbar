@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 QueryToolbar – Manifold‑style query toolbar for QGIS 4.0 (Qt6)
+Auto‑updates field list when fields are added or deleted.
 """
 
 import os
@@ -47,7 +48,7 @@ class QueryToolbar:
         self.toolbar.setObjectName("QueryToolbar")
         self.toolbar.setWindowTitle("Query Toolbar")
 
-        # Field selector (minimum width only for consistent dropdown)
+        # Field selector
         self.fieldCombo = QComboBox()
         self.fieldCombo.setMinimumWidth(150)
         self.fieldCombo.setToolTip("Choose a field")
@@ -100,7 +101,7 @@ class QueryToolbar:
         self.iface.mainWindow().addToolBar(self.toolbar)
         self.toolbar.setVisible(True)
 
-        # Signals
+        # Signals for project and layer changes
         QgsProject.instance().layersAdded.connect(self.onLayersChanged)
         QgsProject.instance().layersRemoved.connect(self.onLayersChanged)
         self.iface.mapCanvas().currentLayerChanged.connect(self.onCurrentLayerChanged)
@@ -108,6 +109,12 @@ class QueryToolbar:
         self.onLayersChanged()
 
     def unload(self):
+        # Disconnect from current layer's field‑changed signal
+        if self.layer:
+            try:
+                self.layer.updatedFields.disconnect(self.onLayerFieldsChanged)
+            except TypeError:
+                pass
         if self.toolbar:
             self.toolbar.deleteLater()
             self.toolbar = None
@@ -119,9 +126,31 @@ class QueryToolbar:
         self.onCurrentLayerChanged(self.iface.mapCanvas().currentLayer())
 
     def onCurrentLayerChanged(self, layer):
+        # Disconnect from previous layer's field‑changed signal
+        if self.layer:
+            try:
+                self.layer.updatedFields.disconnect(self.onLayerFieldsChanged)
+            except TypeError:
+                pass
+            self.uniqueCache.clear()
+
         self.layer = layer if isinstance(layer, QgsVectorLayer) else None
+
+        if self.layer:
+            # Connect to signal that fires when fields are added/deleted
+            self.layer.updatedFields.connect(self.onLayerFieldsChanged)
+
         self.updateFieldList()
         self.updateOperatorList()
+        self.updateValueWidget()
+
+    def onLayerFieldsChanged(self):
+        """Slot called when the layer's fields are modified (added/deleted)."""
+        if self.layer is self.iface.mapCanvas().currentLayer():
+            self.uniqueCache.clear()
+            self.updateFieldList()
+            self.updateOperatorList()
+            self.updateValueWidget()
 
     def updateFieldList(self):
         self.fieldCombo.clear()
@@ -220,7 +249,6 @@ class QueryToolbar:
                 spin.setMaximum(2147483647)
                 spin.setSpecialValueText("")
                 spin.setToolTip("Enter an integer value")
-                # No width restrictions
                 self.valueWidget = spin
             else:
                 dspin = QDoubleSpinBox()
