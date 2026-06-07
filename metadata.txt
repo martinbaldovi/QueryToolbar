@@ -1,0 +1,29 @@
+[general]
+name=QueryToolbar
+description=Replicates the Manifold System Release 8.0 query toolbar with full enhancements (numeric spin boxes, date picker, NULL handling, unique values)
+version=1.0.0
+author=Martin Denver G. Baldovi
+email=martin@baldovi.me
+
+# QGIS 4.0 minimum and maximum (Qt6)
+qgisMinimumVersion=4.0
+qgisMaximumVersion=4.99
+
+# Plugin is experimental? (set to False for stable)
+experimental=False
+deprecated=False
+
+# Tags (comma separated)
+tags=query,selection,manifold,toolbar,attributes
+
+# Homepage (optional)
+homepage=https://github.com/martinbaldovi/QueryToolbar
+
+# Repository (optional)
+repository=https://github.com/martinbaldovi/QueryToolbar
+
+# Icon (optional)
+icon=icon.png
+
+# Changelog (optional)
+changelog=Initial release for QGIS 4.0
